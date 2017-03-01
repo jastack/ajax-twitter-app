@@ -81,7 +81,9 @@ $(() => {
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+const APIUtil = __webpack_require__ (2);
 
 class FollowToggle {
   constructor($el) {
@@ -106,33 +108,56 @@ class FollowToggle {
   handleClick(e) {
     e.preventDefault();
     if (this.followState === "false"){
-      $.ajax({
-        method: "POST",
-        url: `/users/${this.userId}/follow`,
-        dataType: 'json',
-        success: () => {
-          this.followState = "true";
-          this.render();
-        }
-      });
+      APIUtil.followUser(this.userId).then(() => this.toggleFollow());
     } else {
-      $.ajax({
-        method: "DELETE",
-        url: `/users/${this.userId}/follow`,
-        dataType: 'json',
-        success: () => {
-          this.followState = "false";
-          this.render();
-        }
-      });
-
-
+      APIUtil.unfollowUser(this.userId).then(() => this.toggleFollow());
     }
 
+  }
+
+  toggleFollow() {
+    if (this.followState === "true"){
+      this.followState = "false";
+    } else {
+      this.followState = "true";
+    }
+    this.render();
   }
 }
 
 module.exports = FollowToggle;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+
+
+const APIUtil = {
+  followUser: id => (
+    $.ajax({
+      method: "POST",
+      url: `/users/${id}/follow`,
+      dataType: 'json',
+      // success: () => {
+      //   this.followState = "true";
+      //   this.render();
+      // }
+    })
+  ),
+
+  unfollowUser: id => (
+    $.ajax({
+      method: "DELETE",
+      url: `/users/${id}/follow`,
+      dataType: 'json'
+    })
+  )
+};
+
+// exports.method = toggleFollow;
+module.exports = APIUtil;
 
 
 /***/ })

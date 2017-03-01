@@ -1,10 +1,7 @@
-const toggleFollow = () => {
-  this.followState = "true";
-  this.render();
-};
+
 
 const APIUtil = {
-  followUser: id => {
+  followUser: id => (
     $.ajax({
       method: "POST",
       url: `/users/${id}/follow`,
@@ -13,23 +10,17 @@ const APIUtil = {
       //   this.followState = "true";
       //   this.render();
       // }
-    }).then(toggleFollow);
-  },
+    })
+  ),
 
-  unfollowUser: id => {
+  unfollowUser: id => (
     $.ajax({
       method: "DELETE",
       url: `/users/${id}/follow`,
-      dataType: 'json',
-      success: () => {
-        this.followState = "false";
-        this.render();
-      }
-    });
-  }
+      dataType: 'json'
+    })
+  )
 };
 
-module.exports = {
-  APIUtil: APIUtil,
-  toggleFollow: toggleFollow
-};
+// exports.method = toggleFollow;
+module.exports = APIUtil;
