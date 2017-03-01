@@ -13,18 +13,23 @@ class FollowToggle {
   }
 
   render() {
+    this.toggleDisable();
     if (this.followState === "false") {
       this.$el.html("Follow!");
-      this.$el.attr("disabled", false);
     } else if (this.followState === "true") {
       this.$el.html("Unfollow!");
-      this.$el.attr("disabled", false);
     } else if (this.followState === "following") {
-      this.$el.attr("disabled", true);
       this.followState = "false";
     } else if (this.followState === "unfollowing") {
-      this.$el.attr("disabled", true);
       this.followState = "true";
+    }
+  }
+
+  toggleDisable() {
+    if (this.followState === "false" || this.followState === "true") {
+      this.$el.attr("disabled", false);
+    } else if (this.followState === "unfollowing" || this.followState === "following") {
+      this.$el.attr("disabled", true);
     }
   }
 
