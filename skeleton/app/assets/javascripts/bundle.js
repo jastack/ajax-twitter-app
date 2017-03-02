@@ -178,7 +178,7 @@ const APIUtil = {
       data: {
         query: queryVal
       },
-      success: (res) => (console.log(res))
+      success: (res) => (res)
     })
 
 
@@ -201,17 +201,17 @@ class UsersSearch {
     this.$el = $el;
     this.input = $el.children().eq(0).val();
     this.ul = $el.children().eq(1);
-    this.$el.on("keypress", this.handleInput.bind(this));
-    this.renderResults();
+    this.$el.on("keyup", this.handleInput.bind(this));
   }
 
   handleInput(e) {
-    APIUtil.searchUsers(e.target.value + e.key, "hello");
+    APIUtil.searchUsers(e.target.value, "hello").then((res) => this.renderResults(res));
   }
 
-  renderResults() {
-    (this.ul).forEach((user) => {
-      $("ul.users").append("<li><a href=`/users/${user.id}`>${user.username}</a></li>");
+  renderResults(res) {
+    $("ul.users").empty();
+    res.forEach((user) => {
+      $("ul.users").append(`<li><a href=/users/${user.id}>${user.username}</a></li>`);
     });
   }
 }

@@ -23,7 +23,7 @@ const APIUtil = {
       data: {
         query: queryVal
       },
-      success: (res) => (console.log(res))
+      success: (res) => (res)
     })
 
 
