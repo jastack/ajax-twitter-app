@@ -71,10 +71,14 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 const FollowToggle = __webpack_require__ (1);
+const UsersSearch = __webpack_require__ (3);
 
 $(() => {
   $('button.follow-toggle').each(function(index) {
     new FollowToggle($(this));
+  });
+  $('nav.users-search').each(function() {
+    new UsersSearch($(this));
   });
 });
 
@@ -87,7 +91,7 @@ const APIUtil = __webpack_require__ (2);
 
 class FollowToggle {
   constructor($el) {
-    console.log($el);
+    // console.log($el);
     // console.log($el.attr("data-user-id"));
     // console.log($($el).attr("data-initial-follow-state"));
     this.userId = $el.attr("data-user-id");
@@ -164,11 +168,55 @@ const APIUtil = {
       url: `/users/${id}/follow`,
       dataType: 'json'
     })
+  ),
+
+  searchUsers: (queryVal, success) => (
+    $.ajax({
+      method: "GET",
+      url: '/users/search',
+      dataType: 'json',
+      data: {
+        query: queryVal
+      },
+      success: (res) => (console.log(res))
+    })
+
+
   )
 };
 
 
 module.exports = APIUtil;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const APIUtil = __webpack_require__ (2);
+
+class UsersSearch {
+
+  constructor ($el){
+    this.$el = $el;
+    this.input = $el.children().eq(0).val();
+    this.ul = $el.children().eq(1);
+    this.$el.on("keypress", this.handleInput.bind(this));
+    this.renderResults();
+  }
+
+  handleInput(e) {
+    APIUtil.searchUsers(e.target.value + e.key, "hello");
+  }
+
+  renderResults() {
+    (this.ul).forEach((user) => {
+      $("ul.users").append("<li><a href=`/users/${user.id}`>${user.username}</a></li>");
+    });
+  }
+}
+
+module.exports = UsersSearch;
 
 
 /***/ })
