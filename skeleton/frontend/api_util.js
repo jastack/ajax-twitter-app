@@ -25,8 +25,6 @@ const APIUtil = {
       },
       success: (res) => (res)
     })
-
-
   )
 };
 

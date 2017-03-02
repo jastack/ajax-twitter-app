@@ -180,8 +180,6 @@ const APIUtil = {
       },
       success: (res) => (res)
     })
-
-
   )
 };
 
@@ -211,7 +209,12 @@ class UsersSearch {
   renderResults(res) {
     $("ul.users").empty();
     res.forEach((user) => {
-      $("ul.users").append(`<li><a href=/users/${user.id}>${user.username}</a></li>`);
+      console.log(user.followed);
+      $("ul.users").append(`
+        <li>
+          <a href=/users/${user.id}>${user.username}</a>
+          <button class="follow-toggle" data-user-id="${user.id}" data-initial-follow-state="${user.followed}"></button>
+        </li>`);
     });
   }
 }
